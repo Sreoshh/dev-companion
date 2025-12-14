@@ -9,8 +9,11 @@ Initial scaffold with working DevTools panel.
 ---
 
 ## Screenshots
+Shows the latest updated version panel and is subkected to change frequently
 
 ![Dev Companion – Current Panel](assets/current-panel.png)
+
+> Have a look at the CHANGELOG.md for the clean updation history
 
 
 
