@@ -10,7 +10,8 @@ Initial scaffold with working DevTools panel.
 
 ## Screenshots
 
-![Dev Companion – Current UI](assets/current-panel.png)
+![Dev Companion – Current Panel](assets/current-panel.png)
+
 
 
 ## How to Use
