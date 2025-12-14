@@ -1,0 +1,16 @@
+{
+  "manifest_version": 3,
+  "name": "Dev Companion \u2013 CSS Live Edit & Component Extractor",
+  "version": "0.1.0",
+  "description": "Live edit CSS in DevTools and extract DOM components into reusable React scaffolds.",
+  "permissions": [
+    "activeTab",
+    "storage",
+    "downloads",
+    "scripting"
+  ],
+  "devtools_page": "devtools.html",
+  "background": {
+    "service_worker": "background.js"
+  }
+}
