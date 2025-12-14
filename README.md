@@ -7,6 +7,12 @@ An advanced Chrome DevTools extension for frontend developers.
 Initial scaffold with working DevTools panel.
 
 ---
+
+## Screenshots
+
+![Dev Companion – Current UI](assets/current-panel.png)
+
+
 ## How to Use
 
 Dev Companion is a **Chrome DevTools extension**, not a popup-based extension.  
