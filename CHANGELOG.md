@@ -18,8 +18,7 @@ The format is inspired by *Keep a Changelog* and follows basic semantic versioni
 Initial DevTools panel with basic inspection output.
 
 <!-- Screenshots for this version -->
-![Dev Companion v0.1 – Panel](assets/v0.1-panel.png)
-![Dev Companion v0.1 – Inspection](assets/v0.1-inspect.png)
+![Dev Companion v0.1 – Panel and Inspection](assets/v0.1-panel.png)
 
 ### Planned
 - Live CSS editing
