@@ -9,7 +9,7 @@ Initial scaffold with working DevTools panel.
 ---
 
 ## Screenshots
-Shows the latest updated version panel and is subkected to change frequently
+Shows the latest updated version panel and is subjected to change frequently
 
 ![Dev Companion – Current Panel](assets/current-panel.png)
 
