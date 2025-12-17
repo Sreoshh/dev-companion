@@ -6,14 +6,40 @@ The format is inspired by *Keep a Changelog* and follows basic semantic versioni
 
 ---
 
+## [1.2.0] – Hardened Live CSS Editing
+### Added
+- Scoped live CSS editing
+- Unique selector targeting
+- Reset styles support
+
+<!-- Screenshots for this version -->
+![Style Reset](assets/v2-panelOG.png)
+![Style Reset](assets/v2-panelAfterReset.png)
+
+
+### Will fix the three big weaknesses of the current version:
+
+- Fragile selectors (class-based → affects multiple elements)
+- Styles overwrite each other
+- No reset / cleanup mechanism
+
+### Final Output
+
+- Each selected element gets its own unique selector
+- Multiple CSS properties can be edited together
+- Styles are scoped to only that element
+- One-click Reset styles button
+- Clean injected <style> management
+
+
 ## [1.1.0] – Live CSS Editing
 ### Added
 - Editable computed CSS properties
 - Live style injection into inspected page
 
 <!-- Screenshots for this version -->
-![live editing enabled for the selected component](assets/v2-live-editing.png)
-![live css shown for the selected component](assets/v2-live-css.png)
+![live editing enabled for the selected component](assets/v1-live-editing.png)
+![live css shown for the selected component](assets/v1-live-css.png)
 
 ## Expected limitations for this version
 - Styles reset on refresh
@@ -32,7 +58,7 @@ The format is inspired by *Keep a Changelog* and follows basic semantic versioni
 Initial DevTools panel with basic inspection output.
 
 <!-- Screenshots for this version -->
-![Dev Companion v0.1 – Panel and Inspection](assets/v1-panel.png)
+![Dev Companion v0.1 – Panel and Inspection](assets/v0-panel.png)
 
 ### Planned
 - Live CSS editing

@@ -1,6 +1,7 @@
+let currentSelector = null;
+let appliedStyles = {};
 
 const output = document.getElementById("output");
-
 const stylesDiv = document.getElementById("styles");
 
 const EDITABLE_PROPS = [
@@ -13,6 +14,7 @@ const EDITABLE_PROPS = [
   "border-radius"
 ];
 
+// Inspect selected element
 document.getElementById("inspectBtn").onclick = () => {
   chrome.devtools.inspectedWindow.eval(
     `(() => {
@@ -20,9 +22,16 @@ document.getElementById("inspectBtn").onclick = () => {
       if (!el) return null;
 
       const styles = window.getComputedStyle(el);
-      const result = {};
-      ${EDITABLE_PROPS.map(p => `result["${p}"] = styles.getPropertyValue("${p}");`).join("")}
-      return result;
+      const resultStyles = {};
+
+      ${EDITABLE_PROPS.map(
+        prop => `resultStyles["${prop}"] = styles.getPropertyValue("${prop}");`
+      ).join("\n")}
+
+      return {
+        selector: (${getUniqueSelector()}),
+        styles: resultStyles
+      };
     })()`,
     (result, isException) => {
       if (isException || !result) {
@@ -30,11 +39,15 @@ document.getElementById("inspectBtn").onclick = () => {
         return;
       }
 
-      renderStyles(result);
+      currentSelector = result.selector;
+      appliedStyles = {};
+
+      renderStyles(result.styles);
     }
   );
 };
 
+// Render editable style inputs
 function renderStyles(styleObj) {
   stylesDiv.innerHTML = "";
 
@@ -55,12 +68,14 @@ function renderStyles(styleObj) {
   });
 }
 
+// Apply live styles safely
 function applyStyle(prop, value) {
+  if (!currentSelector) return;
+
+  appliedStyles[prop] = value;
+
   chrome.devtools.inspectedWindow.eval(
     `(() => {
-      const el = $0;
-      if (!el) return;
-
       let styleTag = document.getElementById("__dev_companion_styles__");
       if (!styleTag) {
         styleTag = document.createElement("style");
@@ -68,19 +83,64 @@ function applyStyle(prop, value) {
         document.head.appendChild(styleTag);
       }
 
-      const selector = el.tagName.toLowerCase() +
-        (el.className ? "." + el.className.split(" ").join(".") : "");
-
       styleTag.textContent = \`
-        \${selector} {
-          \${prop}: \${value};
-        }
+${currentSelector} {
+${Object.entries(appliedStyles)
+  .map(([k, v]) => `  ${k}: ${v};`)
+  .join("\n")}
+}
       \`;
     })()`
   );
 }
 
+// Generate safer unique selector
+function getUniqueSelector() {
+  return `(() => {
+    const el = $0;
+    if (!el) return null;
 
+    if (el.id) return "#" + el.id;
+
+    const parts = [];
+    let current = el;
+
+    while (current && current.nodeType === 1 && current !== document.body) {
+      let selector = current.tagName.toLowerCase();
+
+      if (current.className) {
+        const cls = current.className.trim().split(/\\s+/)[0];
+        selector += "." + cls;
+      }
+
+      const siblingIndex =
+        Array.from(current.parentNode.children).indexOf(current) + 1;
+
+      selector += \`:nth-child(\${siblingIndex})\`;
+
+      parts.unshift(selector);
+      current = current.parentElement;
+    }
+
+    return parts.join(" > ");
+  })()`;
+}
+// Reset styles
+
+document.getElementById("resetBtn").onclick = () => {
+  appliedStyles = {};
+
+  chrome.devtools.inspectedWindow.eval(
+    `(() => {
+      const styleTag = document.getElementById("__dev_companion_styles__");
+      if (styleTag) styleTag.remove();
+    })()`
+  );
+
+  stylesDiv.innerHTML = "<p>Styles reset</p>";
+};
+
+// Placeholder for extraction
 document.getElementById("captureBtn").onclick = () => {
   output.textContent = "Component extraction coming";
 };
